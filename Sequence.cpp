@@ -1,8 +1,12 @@
-#include "Sequence.h"
+#include"Sequence.h"
 #include<fstream>
 #include<string>
 #include<iostream>
-#include <ctime>
+#include<ctime>
+#include<stdlib.h>
+#include<string.h>
+#define MAXCHAR  1500000
+
 Sequence::Sequence()
 {
 }
@@ -46,7 +50,8 @@ int Sequence::numberOf(char base)
 
 string Sequence::longestConsecutive()
 {
-	clock_t st=clock();
+	clock_t st = clock();
+
 	string longest1, longest2;
 	string temp = count;
 	char a = count[0];
@@ -68,15 +73,57 @@ string Sequence::longestConsecutive()
 			longest2 = count[i];
 		}
 	}
-	clock_t ed=clock();
-	cout<<double (ed-st) / CLOCKS_PER_SEC<<endl;
+
+	clock_t ed = clock();
+	cout << double (ed - st) / CLOCKS_PER_SEC << endl;
 
 	return longest1;
 }
 
+//A way searched from Baidu named 后缀数组
+int comlen(char *p, char *q)
+{
+	int i = 0;
+	while (p[i] == q[i++]);
+	return --i;
+}
+int pstrcmp(const void *p1, const void *p2)
+{
+	return strcmp(*(char* const *)p1, *(char* const*)p2);
+}
+
+char c[MAXCHAR], *a[MAXCHAR];
+
 string Sequence::longestRepeated()
 {
-	return string();
+	clock_t st = clock();
+
+	int nlength = count.length();
+	int maxlen = 0, maxi = 0;
+
+	for (int i = 0; i < count.length(); ++i)
+	{
+		a[i] = &c[i];
+		c[i] = count[i];
+	}
+	c[nlength] = 0;
+	qsort(a, nlength, sizeof(char*), pstrcmp);
+	for (int i = 0;i<nlength-1;++i)
+	{
+		int temp = comlen(a[i], a[i + 1]);
+		if (temp > maxlen)
+		{
+			maxlen = temp;
+			maxi = i;
+		}
+	}
+	string result;
+	result.assign(a[maxi], maxlen);
+
+	clock_t ed = clock();
+	cout << double(ed - st) / CLOCKS_PER_SEC << endl;
+
+	return result;
 }
 
 

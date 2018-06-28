@@ -13,6 +13,9 @@ int main()
 	cout << "G: " << dna.numberOf('G') << endl << "T: " << dna.numberOf('T') << endl;
 	string longestconsecutive=dna.longestConsecutive();
 	cout << longestconsecutive << endl;
+	string longestrepeated = dna.longestRepeated();
+	cout << longestrepeated << endl;
+
 	return 0;
 
 }
